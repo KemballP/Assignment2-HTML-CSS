@@ -14,13 +14,18 @@
     <script src="Validate.js"></script>
     <script>
         function showPage(page) {
-            fetch(page)
-                .then(response => {                    
-                    return response.text();
-                })
-                .then(htmlContent => {
-                    document.getElementById('content').innerHTML = htmlContent;
-                })
+			fetch(page, { method: 'GET', headers: { 'Access-Control-Allow-Origin': '*' } })
+				.then(function(response) {
+					return response.text()
+				})
+				.then(function(html) {
+					var parser = new DOMParser();
+					var docSnippet = parser.parseFromString(html, "text/html");
+					console.log(docSnippet);
+				})
+				.catch(function(err) {
+					console.log('Failed to fetch page: ', err);  
+				});
         }
         $(document).ready(function () {
         showPage('Home.html');
